@@ -1,0 +1,9 @@
+.direnv
+.env
+.envrcpsql
+**/__pycache__
+.vscode
+.envrc
+/*pbf
+/*osm
+/*json

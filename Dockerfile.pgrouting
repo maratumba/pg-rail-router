@@ -1,0 +1,12 @@
+FROM postgis/postgis:14-3.2
+
+RUN apt-get update && apt-get -y install osm2pgrouting osmctools postgresql-14-pgrouting
+
+WORKDIR /db
+COPY init_pgrouting.sql /docker-entrypoint-initdb.d/
+# COPY planet-rail-210315.osm.pbf ./
+# COPY australia-latest.osm.pbf ./
+# COPY export.osm ./
+COPY planet-rail.osm ./
+# RUN osmconvert planet-rail-210315.osm.pbf -o=planet-rail.osm
+# RUN osm2pgrouting --f planet-rail.osm --dbname pgr --username postgres

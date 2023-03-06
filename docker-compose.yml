@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  api:
+    build:
+      context: .
+    container_name: pgrouting-api
+    env_file: ${PGR_DOT_ENV:-.env}
+    ports:
+      - '8000:80'
+    command: uvicorn plasma.api.main:app --host 0.0.0.0 --port 80
+    networks: &network_mode
+      - bridgenet
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.pgrouting
+    container_name: pg_routing_db
+    volumes:
+      - ./:/db
+    command: -p ${PGR_DATABASE_PORT:-5433}
+    networks: *network_mode
+    env_file: ${PGR_DOT_ENV:-.env}
+    environment:
+      - POSTGRES_DB=${PGR_DATABASE_NAME:-postgres}
+      - POSTGRES_USER=${PGR_DATABASE_USER:-postgres}
+      - POSTGRES_PASSWORD=${PGR_DATABASE_PASSWORD:-postgres}
+    ports:
+      - ${PGR_DATABASE_PORT:-5433}:${PGR_DATABASE_PORT:-5433}
+
+networks:
+  bridgenet:
+    driver: bridge

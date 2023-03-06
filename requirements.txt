@@ -1,0 +1,5 @@
+overpy==0.6
+ipython==8.3.0
+fastapi==0.78.0
+uvicorn==0.17.6
+psycopg2-binary==2.9.3
